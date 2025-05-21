@@ -17,12 +17,26 @@ resource "azurerm_virtual_network" "openwebui" {
   resource_group_name = azurerm_resource_group.openwebui.name
 }
 
+
 resource "azurerm_subnet" "openwebui" {
   name                 = "internal"
   resource_group_name  = azurerm_resource_group.openwebui.name
   virtual_network_name = azurerm_virtual_network.openwebui.name
   address_prefixes     = [cidrsubnet(azurerm_virtual_network.openwebui.address_space[0], 8, 2)]
 }
+
+
+resource "azurerm_public_ip" "openwebui" {
+  name                = "acceptanceTestPublicIp1"
+  resource_group_name = azurerm_resource_group.openwebui.name
+  location            = azurerm_resource_group.openwebui.location
+  allocation_method   = "Static"
+
+  tags = {
+    environment = "Development"
+  }
+}
+
 
 resource "azurerm_network_interface" "openwebui" {
   name                = "example-nic"
@@ -33,8 +47,10 @@ resource "azurerm_network_interface" "openwebui" {
     name                          = "internal"
     subnet_id                     = azurerm_subnet.openwebui.id
     private_ip_address_allocation = "Dynamic"
+    public_ip_address_id          = azurerm_public_ip.openwebui.id
   }
 }
+
 
 resource "azurerm_linux_virtual_machine" "openwebui" {
   name                = "example-machine"
