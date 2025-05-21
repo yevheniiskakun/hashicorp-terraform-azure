@@ -118,6 +118,10 @@ resource "azurerm_linux_virtual_machine" "openwebui" {
 }
 # checking if our service is available
 resource "terracurl_request" "openwebui" {
+  lifecycle {
+    replace_triggered_by = [ azurerm_linux_virtual_machine.openwebui ]
+  }
+
   name   = "open_web_ui"
   url    = "http://${resource.azurerm_public_ip.openwebui.ip_address}"
   method = "GET"
