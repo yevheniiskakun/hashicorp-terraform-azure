@@ -1,0 +1,29 @@
+# Ignore Direnv environment file
+.envrc
+
+# Local Terraform state
+*.tfstate
+*.tfstate.*
+
+# Crash logs
+crash.log
+
+# Backup files
+*.backup
+
+# Sensitive variable files
+*.tfvars
+*.tfvars.json
+
+# Terraform plan files
+*.tfplan
+
+# CLI configuration file
+.terraformrc
+.terraform.d/
+
+# Local Terraform directory
+.terraform/
+
+# Directory where public keys are stored
+public_keys/
