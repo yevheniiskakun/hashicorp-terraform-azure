@@ -6,7 +6,13 @@ data "cloudinit_config" "config" {
     filename     = "init.sh"
     content_type = "text/x-shellscript"
 
-    content = file("${path.module}/scripts/provision_basic.sh")
+    content = templatefile("${path.module}/scripts/provision_vars.sh",
+      {
+        open_webui_user = var.open_webui_user,
+        openai_base     = var.openai_base,
+        openai_key      = var.openai_key
+      }
+    )
   }
 
   part {
