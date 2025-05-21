@@ -91,7 +91,7 @@ resource "azurerm_linux_virtual_machine" "openwebui" {
   name                = "example-machine"
   resource_group_name = azurerm_resource_group.openwebui.name
   location            = azurerm_resource_group.openwebui.location
-  size                = "Standard_A2_v2"
+  size                = var.gpu_enabled ? var.machine.gpu.type : var.machine.cpu.type
   admin_username      = "openwebui"
   network_interface_ids = [
     azurerm_network_interface.openwebui.id,

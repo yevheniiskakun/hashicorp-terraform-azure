@@ -18,6 +18,14 @@ variable "gpu_enabled" {
   default     = false
 }
 
+variable "machine" {
+  description = "The machine type and image used for VM creation"
+  default = {
+    "gpu" : { "type" : "Standard_NC4as_T4_v3" },
+    "cpu" : { "type" : "Standard_A2_v2" },
+  }
+}
+
 terraform {
   required_providers {
     azurerm = {
