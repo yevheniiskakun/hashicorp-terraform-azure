@@ -1,5 +1,23 @@
-# We strongly recommend using the required_providers block to set the
-# Azure Provider source and version being used
+variable "open_webui_user" {
+  description = "Username to access the web UI"
+  default     = "admin@demo.gs"
+}
+
+variable "openai_base" {
+  description = "Optional base URL to use OpenAI API with Open Web UI"
+  default     = "https://api.openai.com/v1"
+}
+
+variable "openai_key" {
+  description = "Optional API key to use OpenAI API with Open Web UI"
+  default     = ""
+}
+
+variable "gpu_enabled" {
+  description = "Is the VM GPU enabled"
+  default     = false
+}
+
 terraform {
   required_providers {
     azurerm = {
@@ -13,6 +31,10 @@ terraform {
     terracurl = {
       source  = "devops-rob/terracurl"
       version = "1.2.2"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "3.7.2"
     }
   }
 }
@@ -30,20 +52,4 @@ provider "cloudinit" {
 
 provider "terracurl" {
   # Configuration options
-}
-
-
-variable "open_webui_user" {
-  description = "Username to access the web UI"
-  default     = "admin@demo.gs"
-}
-
-variable "openai_base" {
-  description = "Optional base URL to use OpenAI API with Open Web UI"
-  default     = "https://api.openai.com/v1"
-}
-
-variable "openai_key" {
-  description = "Optional API key to use OpenAI API with Open Web UI"
-  default     = ""
 }

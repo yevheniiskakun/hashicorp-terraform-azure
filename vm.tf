@@ -1,3 +1,17 @@
+
+data "azurerm_platform_image" "openwebui" {
+  location  = azurerm_resource_group.openwebui.location
+  publisher = "Debian"
+  offer     = "debian-11"
+  sku       = "11"
+}
+
+resource "random_password" "password" {
+  length  = 16
+  special = false
+}
+
+
 data "cloudinit_config" "config" {
   gzip          = true
   base64_encode = true # required by Linux
@@ -8,9 +22,11 @@ data "cloudinit_config" "config" {
 
     content = templatefile("${path.module}/scripts/provision_vars.sh",
       {
-        open_webui_user = var.open_webui_user,
-        openai_base     = var.openai_base,
-        openai_key      = var.openai_key
+        open_webui_user     = var.open_webui_user,
+        open_webui_password = random_password.password.result,
+        openai_base         = var.openai_base,
+        openai_key          = var.openai_key,
+        gpu_enabled = var.gpu_enabled
       }
     )
   }
@@ -22,17 +38,12 @@ data "cloudinit_config" "config" {
   }
 }
 
-data "azurerm_platform_image" "openwebui" {
-  location  = azurerm_resource_group.openwebui.location
-  publisher = "Debian"
-  offer     = "debian-11"
-  sku       = "11"
-}
 
 resource "azurerm_resource_group" "openwebui" {
   name     = "example-resources"
   location = "West Europe"
 }
+
 
 resource "azurerm_virtual_network" "openwebui" {
   name                = "example-network"
